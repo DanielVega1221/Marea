@@ -93,13 +93,6 @@ function Menu() {
           </p>
         </div>
 
-        <div className="menu-action">
-          <button className="order-btn" onClick={() => navigate('/order')}>
-            <ShoppingBag size={20} strokeWidth={2.5} />
-            <span>Armar mi pedido</span>
-          </button>
-        </div>
-
         <div className="menu-categories">
           {categories.map((cat) => (
             <button
@@ -126,6 +119,13 @@ function Menu() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="menu-action">
+          <button className="order-btn" onClick={() => navigate('/order')}>
+            <ShoppingBag size={20} strokeWidth={2.5} />
+            <span>Armar mi pedido</span>
+          </button>
         </div>
       </div>
     </section>

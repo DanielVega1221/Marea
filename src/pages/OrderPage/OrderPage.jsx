@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 import { Plus, Minus, ArrowLeft, ShoppingBag, X, Eye, Copy, Check } from 'lucide-react'
@@ -10,6 +10,13 @@ function OrderPage() {
   const [activeCategory, setActiveCategory] = useState('cafe')
   const [showModal, setShowModal] = useState(false)
   const [copied, setCopied] = useState(false)
+
+  // Limpiar el carrito cuando se salga de la página
+  useEffect(() => {
+    return () => {
+      clearCart()
+    }
+  }, [clearCart])
 
   const menuData = {
     cafe: [
