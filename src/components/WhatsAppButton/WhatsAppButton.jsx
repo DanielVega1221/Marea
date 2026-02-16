@@ -13,6 +13,8 @@ function WhatsAppButton() {
       className="whatsapp-button" 
       onClick={handleClick}
       aria-label="Contactar por WhatsApp"
+      disabled
+      title="Demo conceptual - Botón deshabilitado"
     >
       <svg 
         viewBox="0 0 24 24" 

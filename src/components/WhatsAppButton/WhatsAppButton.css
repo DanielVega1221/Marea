@@ -18,6 +18,23 @@
   animation: pulse 3s ease-in-out infinite;
 }
 
+.whatsapp-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+  animation: none;
+}
+
+.whatsapp-button:disabled::before {
+  animation: none;
+  opacity: 0;
+}
+
+.whatsapp-button:disabled:hover {
+  transform: none;
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+}
+
 .whatsapp-button::before {
   content: '';
   position: absolute;
