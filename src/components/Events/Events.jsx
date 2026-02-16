@@ -1,6 +1,14 @@
 import { useState } from 'react'
 import { Clock } from 'lucide-react'
 import './Events.css'
+import tardeCafeImg from '../../assets/Tarde de Café.png'
+import openMicImg from '../../assets/Open Mic Night.png'
+import cocktailImg from '../../assets/Coctelería Experimental.png'
+import jazzImg from '../../assets/Jazz Night.png'
+import djImg from '../../assets/DJ Sessions.png'
+import brunchImg from '../../assets/Brunch Especial.png'
+import rockImg from '../../assets/Noche de Rock.png'
+import wineImg from '../../assets/event.jpg'
 
 function Events() {
   const events = [
@@ -11,7 +19,8 @@ function Events() {
       time: '15:00 - 18:00',
       description: 'Café de especialidad y postres',
       details: 'Disfruta de nuestros mejores cafés de origen junto con una selección de postres artesanales. Ambiente tranquilo perfecto para trabajar o leer.',
-      number: '01'
+      number: '01',
+      image: tardeCafeImg
     },
     {
       id: 2,
@@ -20,7 +29,8 @@ function Events() {
       time: '20:00 - 23:00',
       description: 'Micrófono abierto para artistas',
       details: 'Noche de talento local. Poesía, música acústica, stand-up. Un espacio para que los artistas emergentes muestren su trabajo.',
-      number: '02'
+      number: '02',
+      image: openMicImg
     },
     {
       id: 3,
@@ -29,7 +39,8 @@ function Events() {
       time: '19:00 - 00:00',
       description: 'Nuevas creaciones de nuestro bartender',
       details: 'Prueba cócteles únicos creados especialmente para esta noche. Ingredientes locales, técnicas innovadoras y presentaciones sorprendentes.',
-      number: '03'
+      number: '03',
+      image: cocktailImg
     },
     {
       id: 4,
@@ -38,7 +49,8 @@ function Events() {
       time: '20:00 - 23:00',
       description: 'Música en vivo con artistas locales',
       details: 'Disfruta de una velada única con los mejores músicos de jazz de la región. Ambiente íntimo, buena comida y mejor música.',
-      number: '04'
+      number: '04',
+      image: jazzImg
     },
     {
       id: 5,
@@ -47,7 +59,8 @@ function Events() {
       time: '21:00 - 02:00',
       description: 'Sets de electrónica y house',
       details: 'Baila toda la noche con los mejores DJs locales. Electrónica, house y tech house en una atmósfera vibrante hasta la madrugada.',
-      number: '05'
+      number: '05',
+      image: djImg
     },
     {
       id: 6,
@@ -56,7 +69,8 @@ function Events() {
       time: '10:00 - 15:00',
       description: 'Menú extendido de fin de semana',
       details: 'Un brunch completo con opciones dulces y saladas, jugos naturales, café de especialidad y una selección de platos principales. Reservas recomendadas.',
-      number: '06'
+      number: '06',
+      image: brunchImg
     },
     {
       id: 7,
@@ -65,7 +79,8 @@ function Events() {
       time: '22:00 - 03:00',
       description: 'Bandas en vivo y rock clásico',
       details: 'Las mejores bandas de rock de la escena local. Desde clásicos hasta nuevas propuestas. Barra completa y energía pura.',
-      number: '07'
+      number: '07',
+      image: rockImg
     },
     {
       id: 8,
@@ -74,7 +89,8 @@ function Events() {
       time: '17:00 - 19:00',
       description: 'Selección de vinos de autor',
       details: 'Descubre vinos exclusivos de bodegas boutique. Incluye maridaje con quesos y tablas de embutidos artesanales. Guiado por sommelier.',
-      number: '08'
+      number: '08',
+      image: wineImg
     }
   ];
 
@@ -125,7 +141,12 @@ function Events() {
           </div>
 
           {/* Panel de detalles - lado derecho */}
-          <div className="event-details" key={selectedEvent.id}>
+          <div 
+            className="event-details" 
+            key={selectedEvent.id}
+            style={{ backgroundImage: `url(${selectedEvent.image})` }}
+          >
+            <div className="event-details-overlay"></div>
             <div className="details-header">
               <span className="details-label">Detalles del evento</span>
               <div className="header-decoration"></div>

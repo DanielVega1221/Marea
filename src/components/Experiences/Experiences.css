@@ -126,12 +126,47 @@
   text-align: center;
   animation: fadeIn 0.8s ease-out backwards;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   box-shadow: 
     8px 8px 0 rgba(28, 28, 28, 1),
     0 4px 20px rgba(28, 28, 28, 0.1);
   display: flex;
   flex-direction: column;
+}
+
+/* Background Image */
+.experience-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.experience-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.experience-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(240, 236, 229, 0.88);
+  transition: background 0.5s ease;
+}
+
+.experience-card:hover .experience-bg-image {
+  transform: scale(1.1);
+}
+
+.experience-card:hover .experience-overlay {
+  background: rgba(240, 236, 229, 0.68);
 }
 
 .experience-card::before {
@@ -183,6 +218,8 @@
     var(--color-soft-gold)
   );
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .card-corner {
@@ -219,6 +256,7 @@
   padding: var(--spacing-md);
   background: var(--color-carbon);
   position: relative;
+  z-index: 1;
 }
 
 .experience-number {
@@ -240,6 +278,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .experience-icon-wrapper {
@@ -387,7 +427,7 @@
 }
 
 .experience-card:hover .experience-time {
-  color: var(--color-soft-gold);
+  color: var(--color-carbon);
   transform: scale(1.05);
 }
 

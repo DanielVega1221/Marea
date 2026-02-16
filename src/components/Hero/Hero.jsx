@@ -1,5 +1,6 @@
 import './Hero.css'
 import { MapPin, Clock, Sparkles } from 'lucide-react'
+import fondoImage from '../../assets/fondo.jpg'
 
 function Hero() {
   const scrollToSection = (id) => {
@@ -11,6 +12,10 @@ function Hero() {
 
   return (
     <section className="hero">
+      <div className="hero-background">
+        <img src={fondoImage} alt="Marea Background" className="hero-bg-image" />
+        <div className="hero-overlay"></div>
+      </div>
       <div className="hero-decorative-top"></div>
       <div className="hero-decorative-side left"></div>
       <div className="hero-decorative-side right"></div>
