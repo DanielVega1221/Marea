@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { ShoppingBag } from 'lucide-react'
 import './Menu.css'
 
 function Menu() {
+  const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('cafe');
 
   const menuData = {
@@ -88,6 +91,13 @@ function Menu() {
           <p className="section-intro">
             Explora nuestras propuestas gastronómicas
           </p>
+        </div>
+
+        <div className="menu-action">
+          <button className="order-btn" onClick={() => navigate('/order')}>
+            <ShoppingBag size={20} strokeWidth={2.5} />
+            <span>Armar mi pedido</span>
+          </button>
         </div>
 
         <div className="menu-categories">
