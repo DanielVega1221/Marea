@@ -1,31 +1,36 @@
 import './Gallery.css'
 
 function Gallery() {
-  // Usando placeholders de alta calidad estilo editorial
   const images = [
     {
       url: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80',
-      alt: 'Interior Marea'
+      alt: 'Interior Marea',
+      category: 'Espacio'
     },
     {
       url: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80',
-      alt: 'Café de especialidad'
+      alt: 'Café de especialidad',
+      category: 'Bebidas'
     },
     {
       url: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80',
-      alt: 'Platos de cocina'
+      alt: 'Platos de cocina',
+      category: 'Gastronomía'
     },
     {
       url: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&q=80',
-      alt: 'Bar y cocktails'
+      alt: 'Bar y cocktails',
+      category: 'Bar'
     },
     {
       url: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
-      alt: 'Ambiente'
+      alt: 'Ambiente',
+      category: 'Espacio'
     },
     {
       url: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80',
-      alt: 'Terraza'
+      alt: 'Terraza',
+      category: 'Espacio'
     }
   ];
 
@@ -43,17 +48,30 @@ function Gallery() {
           {images.map((image, index) => (
             <div 
               key={index} 
-              className="gallery-item"
+              className="gallery-frame"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <img 
-                src={image.url} 
-                alt={image.alt}
-                loading="lazy"
-              />
-              <div className="gallery-overlay">
-                <span>{image.alt}</span>
+              <div className="frame-border">
+                <div className="frame-content">
+                  <img 
+                    src={image.url} 
+                    alt={image.alt}
+                    loading="lazy"
+                    className="frame-image"
+                  />
+                  <div className="frame-overlay">
+                    <div className="overlay-content">
+                      <span className="overlay-category">{image.category}</span>
+                      <span className="overlay-title">{image.alt}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="frame-corner frame-corner--tl"></div>
+                <div className="frame-corner frame-corner--tr"></div>
+                <div className="frame-corner frame-corner--bl"></div>
+                <div className="frame-corner frame-corner--br"></div>
               </div>
+              <div className="frame-shadow"></div>
             </div>
           ))}
         </div>

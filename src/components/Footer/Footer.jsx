@@ -1,4 +1,4 @@
-import { Instagram, Facebook, Music2 } from 'lucide-react'
+import { Instagram, Facebook, Music2, MapPin, Phone, Mail, Clock } from 'lucide-react'
 import './Footer.css'
 
 function Footer() {
@@ -7,62 +7,89 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-content">
-          <div className="footer-brand">
-            <h3 className="footer-logo">Marea</h3>
-            <p className="footer-tagline">
-              <em>Café • Cocina • Bar</em>
-            </p>
+        <div className="footer-frame">
+          <div className="frame-border">
+            {/* Brand Section */}
+            <div className="footer-brand">
+              <div className="brand-decoration brand-decoration--tl"></div>
+              <div className="brand-decoration brand-decoration--tr"></div>
+              <h3 className="footer-logo">Marea</h3>
+              <p className="footer-tagline">
+                <em>Café • Cocina • Bar</em>
+              </p>
+              <p className="footer-description">
+                Desayunos europeos, cócteles de autor y cocina de temporada en el corazón de Polanco.
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div className="footer-divider"></div>
+
+            {/* Info Grid */}
+            <div className="footer-info-grid">
+              <div className="info-block">
+                <div className="info-header">
+                  <MapPin size={20} strokeWidth={2.5} />
+                  <span>Ubicación</span>
+                </div>
+                <p>Av. Presidente Masaryk 407</p>
+                <p>Polanco, CDMX</p>
+              </div>
+
+              <div className="info-block">
+                <div className="info-header">
+                  <Clock size={20} strokeWidth={2.5} />
+                  <span>Horarios</span>
+                </div>
+                <p>Lun - Dom</p>
+                <p>08:00 - 01:00</p>
+              </div>
+
+              <div className="info-block">
+                <div className="info-header">
+                  <Phone size={20} strokeWidth={2.5} />
+                  <span>Contacto</span>
+                </div>
+                <p>+54 11 1234-5678</p>
+                <p>hola@mareacafe.com</p>
+              </div>
+
+              <div className="info-block">
+                <div className="info-header">
+                  <Music2 size={20} strokeWidth={2.5} />
+                  <span>Síguenos</span>
+                </div>
+                <div className="social-links">
+                  <a href="#" className="social-link" aria-label="Instagram">
+                    <Instagram size={18} strokeWidth={2} />
+                  </a>
+                  <a href="#" className="social-link" aria-label="Facebook">
+                    <Facebook size={18} strokeWidth={2} />
+                  </a>
+                  <a href="#" className="social-link" aria-label="TikTok">
+                    <Music2 size={18} strokeWidth={2} />
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="footer-divider"></div>
+
+            {/* Footer Bottom */}
+            <div className="footer-bottom">
+              <p className="copyright">&copy; {currentYear} Marea. Demo conceptual - Todos los derechos reservados.</p>
+              <div className="footer-decoration"></div>
+              <p className="credit">Diseñado con atención al detalle</p>
+            </div>
+
+            {/* Corner decorations */}
+            <div className="frame-corner frame-corner--tl"></div>
+            <div className="frame-corner frame-corner--tr"></div>
+            <div className="frame-corner frame-corner--bl"></div>
+            <div className="frame-corner frame-corner--br"></div>
           </div>
-
-          <div className="footer-links">
-            <div className="footer-column">
-              <h4>Contacto</h4>
-              <ul>
-                <li>+51 999 888 777</li>
-                <li>hola@mareabar.com</li>
-                <li>Av. Principal 1234</li>
-              </ul>
-            </div>
-
-            <div className="footer-column">
-              <h4>Horarios</h4>
-              <ul>
-                <li>Lun - Vie: 7:00 - 00:00</li>
-                <li>Sábado: 9:00 - 01:00</li>
-                <li>Domingo: 9:00 - 23:00</li>
-              </ul>
-            </div>
-
-            <div className="footer-column">
-              <h4>Síguenos</h4>
-              <ul className="footer-social">
-                <li>
-                  <a href="#" aria-label="Instagram">
-                    <Instagram strokeWidth={1.5} size={18} />
-                    <span>Instagram</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" aria-label="Facebook">
-                    <Facebook strokeWidth={1.5} size={18} />
-                    <span>Facebook</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="#" aria-label="TikTok">
-                    <Music2 strokeWidth={1.5} size={18} />
-                    <span>TikTok</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          <p>&copy; {currentYear} Marea. Todos los derechos reservados.</p>
-          <p className="footer-credit">Diseñado con atención al detalle</p>
+          <div className="frame-shadow"></div>
         </div>
       </div>
     </footer>

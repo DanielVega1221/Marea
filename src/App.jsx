@@ -7,7 +7,6 @@ import Menu from './components/Menu/Menu'
 import Benefits from './components/Benefits/Benefits'
 import Events from './components/Events/Events'
 import Gallery from './components/Gallery/Gallery'
-import Schedule from './components/Schedule/Schedule'
 import Location from './components/Location/Location'
 import Footer from './components/Footer/Footer'
 import PromoPopup from './components/PromoPopup/PromoPopup'
@@ -34,7 +33,6 @@ function App() {
       <Benefits />
       <Events />
       <Gallery />
-      <Schedule />
       <Location />
       <Footer />
       <PromoPopup show={showPopup} onClose={() => setShowPopup(false)} />
