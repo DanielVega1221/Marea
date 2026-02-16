@@ -15,7 +15,7 @@ function Benefits() {
     {
       icon: Dog,
       title: 'Pet Friendly',
-      description: 'Tu mascota es bienvenida en v terraza',
+      description: 'Tu mascota es bienvenida en nuestra terraza',
       image: petfriendlyImage
     },
     {
