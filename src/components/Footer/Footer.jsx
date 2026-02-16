@@ -60,15 +60,15 @@ function Footer() {
                   <span>Síguenos</span>
                 </div>
                 <div className="social-links">
-                  <a href="#" className="social-link" aria-label="Instagram">
+                  <button className="social-link" aria-label="Instagram">
                     <Instagram size={18} strokeWidth={2} />
-                  </a>
-                  <a href="#" className="social-link" aria-label="Facebook">
+                  </button>
+                  <button className="social-link" aria-label="Facebook">
                     <Facebook size={18} strokeWidth={2} />
-                  </a>
-                  <a href="#" className="social-link" aria-label="TikTok">
+                  </button>
+                  <button className="social-link" aria-label="TikTok">
                     <Music2 size={18} strokeWidth={2} />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

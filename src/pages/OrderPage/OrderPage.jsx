@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
-import { Plus, Minus, ArrowLeft, ShoppingBag, X, Eye, Copy, Check } from 'lucide-react'
+import { Plus, Minus, ArrowLeft, ShoppingBag, X, Eye, Copy, Check, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react'
 import './OrderPage.css'
 
 function OrderPage() {
   const navigate = useNavigate()
-  const { cartItems, addToCart, removeFromCart, getTotal, clearCart } = useCart()
+  const { cartItems, addToCart, removeFromCart, getTotal, clearCart, updateItemNote } = useCart()
   const [activeCategory, setActiveCategory] = useState('cafe')
+  const [currentPage, setCurrentPage] = useState(1)
   const [showModal, setShowModal] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [tempSelections, setTempSelections] = useState({})
+  const [activeProduct, setActiveProduct] = useState(null)
+  
+  const ITEMS_PER_PAGE = 4
 
   // Limpiar el carrito cuando se salga de la página
   useEffect(() => {
@@ -101,6 +106,91 @@ function OrderPage() {
     return cartItem ? cartItem.quantity : 0
   }
 
+  const getTempSelection = (item) => {
+    const key = `${item.category}-${item.name}`
+    return tempSelections[key] || { quantity: 0, note: '' }
+  }
+
+  // Paginación
+  const currentItems = menuData[activeCategory]
+  const totalPages = Math.ceil(currentItems.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const endIndex = startIndex + ITEMS_PER_PAGE
+  const itemsToShow = currentItems.slice(startIndex, endIndex)
+
+  const handleCategoryChange = (categoryId) => {
+    setActiveCategory(categoryId)
+    setCurrentPage(1)
+  }
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber)
+  }
+
+  const setActiveAndClearOthers = (item) => {
+    const currentKey = `${item.category}-${item.name}`
+    
+    // Si ya es el producto activo, no hacer nada
+    if (activeProduct && activeProduct === currentKey) {
+      return
+    }
+
+    // Limpiar selección temporal de otros productos
+    setTempSelections(prev => ({
+      [currentKey]: prev[currentKey] || { quantity: 0, note: '' }
+    }))
+    
+    setActiveProduct(currentKey)
+  }
+
+  const handleTempQuantityChange = (item, change) => {
+    setActiveAndClearOthers(item)
+    const key = `${item.category}-${item.name}`
+    
+    setTempSelections(prev => {
+      const current = prev[key] || { quantity: 0, note: '' }
+      const newQuantity = Math.max(0, current.quantity + change)
+      
+      return {
+        ...prev,
+        [key]: { ...current, quantity: newQuantity }
+      }
+    })
+  }
+
+  const handleNoteChange = (item, value) => {
+    setActiveAndClearOthers(item)
+    const key = `${item.category}-${item.name}`
+    
+    setTempSelections(prev => ({
+      ...prev,
+      [key]: { ...(prev[key] || { quantity: 0, note: '' }), note: value }
+    }))
+  }
+
+  const handleAddToCart = (item) => {
+    const key = `${item.category}-${item.name}`
+    const selection = tempSelections[key]
+    
+    if (!selection || selection.quantity === 0) {
+      return
+    }
+
+    // Agregar al carrito la cantidad de veces especificada
+    for (let i = 0; i < selection.quantity; i++) {
+      addToCart(item, selection.note)
+    }
+
+    // Limpiar selección temporal de este producto
+    setTempSelections(prev => {
+      const newSelections = { ...prev }
+      delete newSelections[key]
+      return newSelections
+    })
+    
+    setActiveProduct(null)
+  }
+
   const formatOrderForWaiter = () => {
     const lines = ['='.repeat(40)]
     lines.push('PEDIDO MAREA')
@@ -126,6 +216,9 @@ function OrderPage() {
       lines.push('-'.repeat(40))
       items.forEach(item => {
         lines.push(`  ${item.quantity}× ${item.name}`)
+        if (item.note) {
+          lines.push(`     📝 ${item.note}`)
+        }
         lines.push(`     $${item.price} c/u → $${(parseFloat(item.price) * item.quantity).toFixed(2)}`)
       })
       lines.push('')
@@ -178,7 +271,7 @@ function OrderPage() {
                   <button
                     key={cat.id}
                     className={`category-btn ${activeCategory === cat.id ? 'active' : ''}`}
-                    onClick={() => setActiveCategory(cat.id)}
+                    onClick={() => handleCategoryChange(cat.id)}
                   >
                     {cat.name}
                   </button>
@@ -186,48 +279,106 @@ function OrderPage() {
               </div>
 
               <div className="menu-grid">
-                {menuData[activeCategory].map((item, index) => {
-                  const quantity = getItemQuantity(item)
+                {itemsToShow.map((item, index) => {
+                  const cartQuantity = getItemQuantity(item)
+                  const tempSelection = getTempSelection(item)
+                  const noteKey = `${item.category}-${item.name}`
+                  const isActive = activeProduct === noteKey
+                  const showNote = tempSelection.quantity > 0
+                  
                   return (
                     <div 
-                      key={`${item.category}-${index}`} 
-                      className="product-card"
+                      key={`${activeCategory}-${startIndex + index}`} 
+                      className={`product-card ${isActive ? 'active' : ''}`}
                     >
                       <div className="product-info">
                         <h4 className="product-name">{item.name}</h4>
                         <p className="product-description">{item.description}</p>
-                        <div className="product-price">${item.price}</div>
+                        <div className="product-footer">
+                          <div className="product-price">${item.price}</div>
+                          {cartQuantity > 0 && (
+                            <div className="in-cart-badge">
+                              En carrito: {cartQuantity}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="product-actions">
-                        {quantity > 0 ? (
-                          <div className="quantity-controls">
-                            <button 
-                              className="qty-btn"
-                              onClick={() => removeFromCart(item)}
-                            >
-                              <Minus size={18} />
-                            </button>
-                            <span className="qty-display">{quantity}</span>
-                            <button 
-                              className="qty-btn"
-                              onClick={() => addToCart(item)}
-                            >
-                              <Plus size={18} />
-                            </button>
-                          </div>
-                        ) : (
+                      
+                      <div className="product-controls">
+                        <div className="quantity-controls-temp">
                           <button 
-                            className="add-btn"
-                            onClick={() => addToCart(item)}
+                            className="qty-btn-temp"
+                            onClick={() => handleTempQuantityChange(item, -1)}
+                            disabled={tempSelection.quantity === 0}
+                          >
+                            <Minus size={18} />
+                          </button>
+                          <span className="qty-display-temp">{tempSelection.quantity}</span>
+                          <button 
+                            className="qty-btn-temp"
+                            onClick={() => handleTempQuantityChange(item, 1)}
                           >
                             <Plus size={18} />
-                            <span>Agregar</span>
                           </button>
-                        )}
+                        </div>
+                        
+                        <button 
+                          className="add-to-cart-btn"
+                          onClick={() => handleAddToCart(item)}
+                          disabled={tempSelection.quantity === 0}
+                        >
+                          <ShoppingBag size={18} />
+                          <span>Agregar al pedido</span>
+                        </button>
                       </div>
+                      
+                      {showNote && (
+                        <div className="product-note-input">
+                          <textarea
+                            placeholder="Notas: ej. sin cebolla, poco queso..."
+                            value={tempSelection.note}
+                            onChange={(e) => handleNoteChange(item, e.target.value)}
+                            rows="2"
+                            className="note-textarea"
+                          />
+                        </div>
+                      )}
                     </div>
                   )
                 })}
+              </div>
+
+              {/* Paginación */}
+              <div className="menu-pagination">
+                <button 
+                  className="pagination-btn prev"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft size={20} strokeWidth={2.5} />
+                  <span>Anterior</span>
+                </button>
+
+                <div className="pagination-numbers">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i + 1}
+                      className={`pagination-number ${currentPage === i + 1 ? 'active' : ''}`}
+                      onClick={() => handlePageChange(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button 
+                  className="pagination-btn next"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  <span>Siguiente</span>
+                  <ChevronRight size={20} strokeWidth={2.5} />
+                </button>
               </div>
             </div>
 
@@ -262,6 +413,12 @@ function OrderPage() {
                             </button>
                             <div className="bill-item-details">
                               <div className="bill-item-name">{item.name}</div>
+                              {item.note && (
+                                <div className="bill-item-note">
+                                  <MessageSquare size={12} />
+                                  {item.note}
+                                </div>
+                              )}
                               <div className="bill-item-qty">× {item.quantity}</div>
                             </div>
                             <div className="bill-item-price">
@@ -358,7 +515,15 @@ function OrderPage() {
                       {items.map((item, index) => (
                         <div key={index} className="order-item-row">
                           <span className="order-item-qty">{item.quantity}×</span>
-                          <span className="order-item-name">{item.name}</span>
+                          <div className="order-item-info">
+                            <span className="order-item-name">{item.name}</span>
+                            {item.note && (
+                              <span className="order-item-note">
+                                <MessageSquare size={14} />
+                                {item.note}
+                              </span>
+                            )}
+                          </div>
                           <span className="order-item-price">
                             ${(parseFloat(item.price) * item.quantity).toFixed(2)}
                           </span>

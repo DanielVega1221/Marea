@@ -5,40 +5,40 @@ const CartContext = createContext()
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([])
 
-  const addToCart = useCallback((item) => {
+  const addToCart = useCallback((item, note = '') => {
     setCartItems(prev => {
       const existingItem = prev.find(i => 
-        i.name === item.name && i.category === item.category
+        i.name === item.name && i.category === item.category && i.note === note
       )
       
       if (existingItem) {
         return prev.map(i =>
-          i.name === item.name && i.category === item.category
+          i.name === item.name && i.category === item.category && i.note === note
             ? { ...i, quantity: i.quantity + 1 }
             : i
         )
       }
       
-      return [...prev, { ...item, quantity: 1 }]
+      return [...prev, { ...item, quantity: 1, note: note || '' }]
     })
   }, [])
 
   const removeFromCart = useCallback((item) => {
     setCartItems(prev => {
       const existingItem = prev.find(i => 
-        i.name === item.name && i.category === item.category
+        i.name === item.name && i.category === item.category && i.note === item.note
       )
       
       if (existingItem && existingItem.quantity > 1) {
         return prev.map(i =>
-          i.name === item.name && i.category === item.category
+          i.name === item.name && i.category === item.category && i.note === item.note
             ? { ...i, quantity: i.quantity - 1 }
             : i
         )
       }
       
       return prev.filter(i => 
-        !(i.name === item.name && i.category === item.category)
+        !(i.name === item.name && i.category === item.category && i.note === item.note)
       )
     })
   }, [])
@@ -57,6 +57,14 @@ export function CartProvider({ children }) {
     return cartItems.reduce((count, item) => count + item.quantity, 0)
   }, [cartItems])
 
+  const updateItemNote = useCallback((item, newNote) => {
+    setCartItems(prev => prev.map(i =>
+      i.name === item.name && i.category === item.category && i.note === item.note
+        ? { ...i, note: newNote }
+        : i
+    ))
+  }, [])
+
   return (
     <CartContext.Provider value={{
       cartItems,
@@ -64,7 +72,8 @@ export function CartProvider({ children }) {
       removeFromCart,
       clearCart,
       getTotal,
-      getItemCount
+      getItemCount,
+      updateItemNote
     }}>
       {children}
     </CartContext.Provider>

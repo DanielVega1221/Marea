@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ShoppingBag } from 'lucide-react'
+import { ShoppingBag, Coffee, ChefHat, Wine, Cake, ChevronLeft, ChevronRight } from 'lucide-react'
 import './Menu.css'
 
 function Menu() {
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('cafe');
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const ITEMS_PER_PAGE = 4;
 
   const menuData = {
     cafe: [
@@ -77,11 +80,29 @@ function Menu() {
   };
 
   const categories = [
-    { id: 'cafe', name: 'Café' },
-    { id: 'cocina', name: 'Cocina' },
-    { id: 'bar', name: 'Bar' },
-    { id: 'postres', name: 'Postres' }
+    { id: 'cafe', name: 'Café', icon: Coffee },
+    { id: 'cocina', name: 'Cocina', icon: ChefHat },
+    { id: 'bar', name: 'Bar', icon: Wine },
+    { id: 'postres', name: 'Postres', icon: Cake }
   ];
+
+  // Calcular paginación
+  const currentItems = menuData[activeCategory];
+  const totalPages = Math.ceil(currentItems.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const itemsToShow = currentItems.slice(startIndex, endIndex);
+
+  // Cambiar categoría resetea página
+  const handleCategoryChange = (categoryId) => {
+    setActiveCategory(categoryId);
+    setCurrentPage(1);
+  };
+
+  // Cambiar página
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <section className="menu" id="menu">
@@ -93,39 +114,89 @@ function Menu() {
           </p>
         </div>
 
-        <div className="menu-categories">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              className={`category-btn ${activeCategory === cat.id ? 'active' : ''}`}
-              onClick={() => setActiveCategory(cat.id)}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
+        <div className="menu-layout">
+          {/* Sidebar de categorías */}
+          <div className="menu-sidebar">
+            <div className="sidebar-header">
+              <h3>Categorías</h3>
+            </div>
+            <div className="menu-categories-vertical">
+              {categories.map((cat) => {
+                const IconComponent = cat.icon;
+                return (
+                  <button
+                    key={cat.id}
+                    className={`category-tab ${activeCategory === cat.id ? 'active' : ''}`}
+                    onClick={() => handleCategoryChange(cat.id)}
+                  >
+                    <IconComponent size={24} strokeWidth={2.5} />
+                    <span>{cat.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-        <div className="menu-items" key={activeCategory}>
-          {menuData[activeCategory].map((item, index) => (
-            <div 
-              key={`${activeCategory}-${index}`} 
-              className="menu-item"
-              style={{ animationDelay: `${index * 0.03}s` }}
-            >
-              <div className="menu-item-info">
-                <h4 className="menu-item-name">{item.name}</h4>
-                <p className="menu-item-description">{item.description}</p>
-                <div className="menu-item-price">${item.price}</div>
+          {/* Contenido scrolleable */}
+          <div className="menu-content">
+            <div className="menu-card">
+              <div className="menu-items" key={activeCategory}>
+                {itemsToShow.map((item, index) => (
+                  <div 
+                    key={`${activeCategory}-${startIndex + index}`} 
+                    className="menu-item"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="menu-item-info">
+                      <h4 className="menu-item-name">{item.name}</h4>
+                      <p className="menu-item-description">{item.description}</p>
+                      <div className="menu-item-price">${item.price}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Paginación */}
+              <div className="menu-pagination">
+                <button 
+                  className="pagination-btn prev"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft size={20} strokeWidth={2.5} />
+                  <span>Anterior</span>
+                </button>
+
+                <div className="pagination-numbers">
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i + 1}
+                      className={`pagination-number ${currentPage === i + 1 ? 'active' : ''}`}
+                      onClick={() => handlePageChange(i + 1)}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+
+                <button 
+                  className="pagination-btn next"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  <span>Siguiente</span>
+                  <ChevronRight size={20} strokeWidth={2.5} />
+                </button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="menu-action">
-          <button className="order-btn" onClick={() => navigate('/order')}>
-            <ShoppingBag size={20} strokeWidth={2.5} />
-            <span>Armar mi pedido</span>
-          </button>
+          <div className="menu-action">
+            <button className="order-btn" onClick={() => navigate('/order')}>
+              <ShoppingBag size={20} strokeWidth={2.5} />
+              <span>Armar mi pedido</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
