@@ -36,7 +36,7 @@
 }
 
 .benefits .section-header em {
-  color: var(--color-green-gray);
+  color: #4D5C52;
 }
 
 .benefits-grid {
@@ -74,13 +74,20 @@
   width: 100%;
   height: 100%;
   z-index: 0;
+  overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .benefit-bg-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .benefit-overlay {

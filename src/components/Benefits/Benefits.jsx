@@ -88,7 +88,13 @@ function Benefits() {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="benefit-bg">
-                  <img src={benefit.image} alt={benefit.title} className="benefit-bg-image" />
+                  <img 
+                    src={benefit.image} 
+                    alt={benefit.title} 
+                    className="benefit-bg-image"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="benefit-overlay"></div>
                 </div>
                 <div className="benefit-icon">

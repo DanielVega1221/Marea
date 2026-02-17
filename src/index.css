@@ -144,6 +144,15 @@ section::before {
   opacity: 0;
 }
 
+/* Section intro styling */
+.section-intro {
+  color: #8C7F7F;
+}
+
+.section-header em {
+  color: #4D5C52;
+}
+
 /* Utilidades */
 .text-center {
   text-align: center;

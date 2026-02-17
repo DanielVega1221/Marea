@@ -76,12 +76,12 @@
 }
 
 .section-header em {
-  color: var(--color-green-gray);
+  color: #4D5C52;
 }
 
 .section-intro {
   font-size: 1.25rem;
-  color: var(--color-lavender-gray);
+  color: #8C7F7F;
   max-width: 650px;
   margin: 0 auto;
   line-height: 1.8;
